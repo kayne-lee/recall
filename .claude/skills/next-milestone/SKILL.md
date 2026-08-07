@@ -23,10 +23,12 @@ Sessions on this repository start with no memory of the previous one.
    "Done when" criterion in `PLAN.md` is demonstrably met.
 5. **Run the full check** before committing:
    ```bash
-   uv run ruff check . && uv run ruff format --check . && uv run mypy && uv run pytest
+   make check
    ```
-   All four must pass. If something fails and cannot be fixed within scope, stop
-   and record the failure in `PROGRESS.md` rather than committing over it.
+   This runs `ruff`, `ruff format --check`, `mypy --strict`, and `pytest` — the
+   same four CI runs. All four must pass. If something fails and cannot be fixed
+   within scope, stop and record the failure in `PROGRESS.md` rather than
+   committing over it.
 6. **Commit.** Small, focused commits with imperative subjects
    (`add contradiction classifier`, not `Added contradiction classifier`).
    **Never add a `Co-Authored-By` trailer or any AI-attribution footer.**
