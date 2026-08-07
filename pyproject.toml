@@ -31,6 +31,14 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.wheel]
 packages = ["src/recall"]
 
+[tool.uv]
+# Use uv's own interpreters, never whatever Python happens to be on PATH.
+# pyenv builds CPython without --enable-loadable-sqlite-extensions on macOS, so a
+# pyenv interpreter cannot load sqlite-vec at all — sqlite3.Connection has no
+# enable_load_extension attribute. Managed builds have it. Since the whole store
+# depends on that extension, the interpreter is not a free choice.
+python-preference = "only-managed"
+
 [tool.ruff]
 line-length = 100
 target-version = "py312"
