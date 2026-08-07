@@ -62,6 +62,29 @@ The headline result is the recall/cost curve against that full-context baseline.
 A memory system that is less accurate *and* cheaper is not interesting; the claim
 has to be that it is competitive on accuracy at a fraction of the cost.
 
+## Inspecting it
+
+Aggregate scores say whether the system works. They do not say *why* a particular
+fact won, and that is usually the question worth asking.
+
+```bash
+recall ui path/to/store.db
+```
+
+A read-only web UI over a store file:
+
+- **Facts** — supersession chains rendered as chains. The Kingston fact and the
+  Toronto fact that superseded it, side by side, each linked to the episode it
+  came from.
+- **Episodes** — the session timeline, and which facts each episode produced.
+- **Retrieval** — run a query, see the ranked results with each score broken into
+  its vector, recency, and frequency parts.
+- **Decay** — decay scores over time against the eviction threshold, with evicted
+  memories still visible and marked.
+- **Benchmark** — the recall/cost curve against the full-context baseline.
+
+Nothing in the UI writes to the store.
+
 ## Stack
 
 - **Storage** — SQLite with `sqlite-vec`. One file, no daemon, real SQL for the
@@ -69,6 +92,8 @@ has to be that it is competitive on accuracy at a fraction of the cost.
 - **Embeddings** — `sentence-transformers`, local. No API key, so the benchmark
   runs on a clone.
 - **Extraction and consolidation** — `claude-opus-5` with adaptive thinking.
+- **Inspector** — FastAPI and React. The built frontend ships in the package, so
+  running the UI needs no Node; building it does.
 
 ## Install
 

@@ -53,3 +53,9 @@ Sessions on this repository start with no memory of the previous one.
 - Storage, embedding, and retrieval must work without `ANTHROPIC_API_KEY`. Only
   extraction and consolidation may require it, and their absence must produce a
   clear error rather than a crash.
+- **The inspector is read-only.** No endpoint it exposes may write to the store.
+  It renders provenance; it is not a second path to mutating state alongside
+  append-only episodes and supersession.
+- **Running the UI must not require Node.** The built frontend ships in the
+  package. If a change to the UI is not accompanied by a rebuilt bundle, CI
+  fails — that is intended, not a nuisance to work around.
