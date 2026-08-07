@@ -105,6 +105,27 @@ uv run pytest
 Extraction and consolidation need `ANTHROPIC_API_KEY`. Storage, retrieval, and
 the embedding path run without it.
 
+## Development
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh   # if uv isn't installed
+uv sync --all-extras
+make check
+```
+
+`make check` runs the full gate — `ruff`, `ruff format --check`, `mypy --strict`,
+`pytest` — which is exactly what CI runs. All four must pass before a commit.
+
+The project pins `python-preference = "only-managed"`, so uv uses its own
+interpreter rather than whatever is on `PATH`. This is not a style preference:
+pyenv builds CPython without `--enable-loadable-sqlite-extensions` on macOS, and
+an interpreter built that way cannot load `sqlite-vec` at all. Since the store is
+built on that extension, the interpreter is not a free choice.
+
+`uv.lock` is committed and CI installs with `--locked`. If you change a
+dependency, run `uv sync --all-extras` and commit the updated lockfile in the
+same change, or CI will fail on the stale lock.
+
 ## Status
 
 Under active development. See `PLAN.md` for the milestone breakdown and
